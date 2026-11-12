@@ -1,1 +1,1 @@
-Mac快捷启动器JLauncher
+Mac快捷启动器JLaunchPad
