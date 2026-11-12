@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JLauncher</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-balance {
+                text-wrap: balance;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#6b7280',
+                        card: '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-black font-sans antialiased">
+    <header
+        class="flex w-full min-h-[7rem] items-center justify-end gap-3 px-4 py-6 sm:gap-4 sm:px-6"
+        aria-label="菜单栏"
+    >
+        <a
+            href="mailto:646659227@qq.com"
+            class="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg border border-gray-200 bg-white px-5 text-sm font-medium text-black transition-colors hover:bg-gray-50 sm:px-6 sm:text-base"
+        >
+            <i class="fas fa-envelope text-sm" aria-hidden="true"></i>
+            Email me
+        </a>
+        <a
+            id="jlauncher-download"
+            href="http://39.105.8.238/api/v1/jlauncher/download?platform=macOS"
+            class="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg border border-transparent bg-black px-5 text-sm font-medium text-white transition-colors hover:bg-gray-800 sm:px-6 sm:text-base"
+        >
+            <i class="fas fa-download text-xs sm:text-sm" aria-hidden="true"></i>
+            立即下载
+        </a>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="max-w-6xl mx-auto px-6 pt-8 pb-16 md:pt-12 md:pb-24">
+        <div class="mx-auto max-w-lg text-center">
+            <div class="flex flex-col items-center gap-4">
+                <img
+                    src="assets/app-logo.png"
+                    alt=""
+                    width="128"
+                    height="128"
+                    class="w-24 h-24 md:w-32 md:h-32 rounded-[22%] shadow-lg object-cover shrink-0"
+                    decoding="async"
+                >
+                <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-black">
+                    JLauncher
+                </h1>
+                <div class="flex flex-wrap justify-center gap-2" role="list" aria-label="产品特点">
+                    <span role="listitem" class="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm font-medium text-gray-700">方便</span>
+                    <span role="listitem" class="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm font-medium text-gray-700">快捷</span>
+                    <span role="listitem" class="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm font-medium text-gray-700">效率</span>
+                </div>
+            </div>
+            <div class="mt-6 space-y-3 text-balance text-center">
+                <h2 class="text-xl md:text-2xl font-semibold text-black leading-snug">
+                    Mac 生产力进阶利器
+                </h2>
+                <p class="text-sm md:text-base text-gray-500 font-medium tracking-wide">
+                    极简轻量｜极速响应｜全局快捷启动
+                </p>
+                <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+                    告别冗余操作，用一键高效，重塑办公节奏
+                </p>
+            </div>
+        </div>
+
+        <section class="mt-16 md:mt-20 w-full -mx-6 px-3 pb-4 sm:px-4" aria-label="功能介绍图">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4 md:gap-5">
+                <img
+                    src="assets/app-content-01.png"
+                    alt="JLauncher 介绍 1"
+                    class="block w-full rounded-xl border border-gray-200 bg-gray-50 object-contain
+                           shadow-lg shadow-gray-900/10
+                           transition-all duration-300 ease-out
+                           hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-900/15"
+                    loading="lazy"
+                    decoding="async"
+                >
+                <img
+                    src="assets/app-content-02.png"
+                    alt="JLauncher 介绍 2"
+                    class="block w-full rounded-xl border border-gray-200 bg-gray-50 object-contain
+                           shadow-lg shadow-gray-900/10
+                           transition-all duration-300 ease-out
+                           hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-900/15"
+                    loading="lazy"
+                    decoding="async"
+                >
+                <img
+                    src="assets/app-content-03.png"
+                    alt="JLauncher 介绍 3"
+                    class="block w-full rounded-xl border border-gray-200 bg-gray-50 object-contain
+                           shadow-lg shadow-gray-900/10
+                           transition-all duration-300 ease-out
+                           hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-900/15"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </div>
+        </section>
+    </main>
+    <script>
+        (function () {
+            var base =
+                typeof window.JLAUNCHER_API_BASE === 'string'
+                    ? window.JLAUNCHER_API_BASE.replace(/\/$/, '')
+                    : 'http://39.105.8.238';
+            var el = document.getElementById('jlauncher-download');
+            if (!el) return;
+            var path = '/api/v1/jlauncher/download?platform=macOS';
+            el.setAttribute('href', base ? base + path : path);
+        })();
+    </script>
+</body>
+</html>
