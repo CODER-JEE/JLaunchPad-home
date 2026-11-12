@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JLaunchPad 是为 Mac 打造的启动台：快速搜索应用、自由整理布局，用快捷键或触控板手势随时打开。">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>JLaunchPad — 为 Mac 找回熟悉的启动台</title>
+  <link rel="icon" href="assets/app-logo.png">
+  <style>
+    :root { color-scheme: light; --ink: #182234; --muted: #627083; --line: #e5e9ef; --accent: #245db4; --surface: #fff; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #f7f8fa; color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .shell { width: min(1160px, calc(100% - 48px)); margin: auto; }
+    .site-header { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgba(229,233,239,.8); background: rgba(255,255,255,.87); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+    .nav { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 750; letter-spacing: -.03em; }
+    .brand img { width: 34px; height: 34px; border-radius: 9px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: #48566b; font-size: 14px; font-weight: 600; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links .nav-download { color: #fff; background: var(--ink); padding: 10px 17px; border-radius: 999px; }
+    .nav-links .nav-download:hover { color: #fff; background: #304864; }
+    .hero { padding: 92px 0 96px; overflow: hidden; background: radial-gradient(circle at 77% 7%, #e7f1ff 0, transparent 38%), #f7f8fa; }
+    .hero-copy { max-width: 900px; margin: 0 auto; text-align: center; }
+    .hero-title { display: flex; align-items: flex-start; justify-content: center; gap: 34px; }
+    .hero-title img { flex: none; width: 96px; height: 96px; margin-top: 8px; border-radius: 24px; box-shadow: 0 12px 26px rgba(25,48,82,.14); transform: rotate(-30deg); }
+    .hero-title h1 { text-align: left; }
+    .kicker { margin: 0 0 18px; color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 22px; font-size: clamp(48px, 7.5vw, 88px); line-height: 1.08; letter-spacing: -.075em; font-weight: 780; }
+    h1 span { color: #2e68bb; }
+    .hero-lead { max-width: 620px; margin: 0 auto 30px; color: var(--muted); font-size: clamp(17px, 2.1vw, 21px); line-height: 1.7; }
+    .actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 23px; border-radius: 12px; font-size: 15px; font-weight: 700; transition: transform .2s, background .2s; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #fff; background: var(--accent); box-shadow: 0 10px 22px rgba(36,93,180,.18); }
+    .button-primary:hover { background: #174b99; }
+    .hero-note { margin: 14px 0 0; color: #8190a1; font-size: 12px; }
+    .showcase { position: relative; margin-top: 65px; padding: 12px; border: 1px solid #dae2eb; border-radius: 26px; background: #fff; box-shadow: 0 32px 80px rgba(25,48,82,.16); }
+    .showcase img { width: 100%; height: auto; border-radius: 17px; }
+    .showcase-caption { position: absolute; right: 28px; bottom: 28px; padding: 8px 12px; border: 1px solid rgba(255,255,255,.4); border-radius: 9px; color: #fff; background: rgba(17,31,53,.53); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-size: 12px; }
+    .intro { padding: 100px 0 72px; text-align: center; }
+    .intro h2, .section-title h2 { margin: 0; font-size: clamp(34px, 4vw, 53px); line-height: 1.2; letter-spacing: -.055em; }
+    .intro > p:last-child { max-width: 650px; margin: 23px auto 0; color: var(--muted); font-size: 18px; line-height: 1.75; }
+    .features { padding-bottom: 112px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .feature { min-height: 272px; padding: 34px 36px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: 0 14px 30px rgba(33,52,77,.035); }
+    .feature-number { display: inline-flex; margin-bottom: 31px; color: #2d70c3; font-size: 13px; font-weight: 750; letter-spacing: .06em; }
+    .feature h3 { margin-bottom: 12px; font-size: 25px; letter-spacing: -.035em; }
+    .feature p { max-width: 430px; margin-bottom: 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .feature:nth-child(2) { background: #edf4fe; border-color: #e2ecf9; }
+    .feature:nth-child(3) { background: #f0f3f8; }
+    .feature:nth-child(4) { background: #f6f3f7; }
+    .detail { padding: 82px 0; }
+    .detail-inner { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; gap: 80px; }
+    .section-title p:last-child { margin: 23px 0 0; max-width: 490px; color: var(--muted); font-size: 17px; line-height: 1.8; }
+    .detail-list { display: grid; gap: 12px; }
+    .detail-item { display: flex; gap: 17px; align-items: flex-start; padding: 20px 22px; border: 1px solid #dce5ef; border-radius: 16px; background: rgba(255,255,255,.8); }
+    .detail-item strong { flex: 0 0 auto; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #deebfb; color: var(--accent); font-size: 15px; }
+    .detail-item b { display: block; margin-bottom: 4px; font-size: 15px; }
+    .detail-item span { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .footer { padding: 26px 0 34px; border-top: 1px solid var(--line); color: #7d8998; font-size: 13px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    :focus-visible { outline: 3px solid #2d70c3; outline-offset: 3px; }
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 32px, 1160px); }
+      .nav { min-height: 62px; }
+      .nav-links { gap: 14px; font-size: 13px; }
+      .nav-links a:first-child { display: none; }
+      .nav-links .nav-download { padding: 9px 13px; }
+      .hero { padding: 74px 0 70px; }
+      .hero-title { gap: 18px; }
+      .hero-title img { width: 56px; height: 56px; margin-top: 5px; border-radius: 15px; }
+      .hero-title h1 { font-size: clamp(36px, 9vw, 54px); }
+      .showcase { margin-top: 46px; padding: 6px; border-radius: 14px; }
+      .showcase img { border-radius: 9px; }
+      .showcase-caption { right: 12px; bottom: 12px; font-size: 10px; }
+      .intro { padding: 72px 0 54px; }
+      .intro > p:last-child { font-size: 16px; }
+      .features { padding-bottom: 74px; }
+      .feature-grid { grid-template-columns: 1fr; gap: 12px; }
+      .feature { min-height: 0; padding: 27px; }
+      .feature-number { margin-bottom: 21px; }
+      .feature h3 { font-size: 23px; }
+      .detail { padding: 68px 0; }
+      .detail-inner { grid-template-columns: 1fr; gap: 30px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .button { transition: none; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="主导航">
+      <a class="brand" href="#top" aria-label="JLaunchPad 首页"><img src="assets/app-logo.png" alt=""><span>JLaunchPad</span></a>
+      <div class="nav-links"><a href="#features">功能介绍</a><a href="mailto:646659227@qq.com?subject=JLaunchPad%20Feedback">联系我们</a><a class="nav-download" id="jlaunchpad-download" href="http://39.105.8.238/api/v1/jlaunchpad/download?platform=macOS">立即下载</a></div>
+    </nav>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="shell">
+        <div class="hero-copy">
+          <p class="kicker">JLaunchPad · for macOS</p>
+          <div class="hero-title"><img src="assets/app-logo.png" alt="JLaunchPad 图标" width="96" height="96"><h1>熟悉的启动台，<br><span>重新回到 Mac。</span></h1></div>
+          <p class="hero-lead">把所有应用放在触手可及的地方。快速搜索、自由整理，用你熟悉的方式打开，让每一次启动都更顺手。</p>
+          <div class="actions"><a class="button button-primary" data-download href="http://39.105.8.238/api/v1/jlaunchpad/download?platform=macOS">下载 macOS 版</a></div>
+          <p class="hero-note">专为 macOS 打造</p>
+        </div>
+        <div class="showcase"><img src="assets/JLaunchPad.png" alt="JLaunchPad 启动台实景：搜索栏、应用网格和分页指示器" width="1914" height="1079"><span class="showcase-caption">JLaunchPad 实际界面</span></div>
+      </div>
+    </section>
+    <section class="intro shell" id="features">
+      <p class="kicker">让应用启动回归简单</p>
+      <h2>打开应用，回到直觉。</h2>
+      <p>JLaunchPad 为 Mac 提供熟悉的启动台体验。应用一目了然，布局按你的习惯组织；需要某个 App 时，呼出、搜索、启动，一气呵成。</p>
+    </section>
+    <section class="features shell" aria-label="核心功能">
+      <div class="feature-grid">
+        <article class="feature"><span class="feature-number">01 / 搜索</span><h3>输入名称，快速找到</h3><p>打开启动台后直接输入应用名称，即时筛选结果；按下 Return，即可启动目标应用。</p></article>
+        <article class="feature"><span class="feature-number">02 / 整理</span><h3>把布局交给自己</h3><p>拖动应用调整位置，跨页整理，或把常用应用收入文件夹。你的排列方式会被保存。</p></article>
+        <article class="feature"><span class="feature-number">03 / 显示</span><h3>全屏或窗口，随需切换</h3><p>喜欢沉浸感，就用全屏启动台；想快速找应用，就切换为窗口显示。</p></article>
+        <article class="feature"><span class="feature-number">04 / 呼出</span><h3>顺手的方式，随时打开</h3><p>设置键盘快捷键或触控板手势，让启动台自然融入日常操作。</p></article>
+      </div>
+    </section>
+    <section class="detail">
+      <div class="detail-inner shell">
+        <div class="section-title"><p class="kicker">更多贴心细节</p><h2>让启动台，<br>更像你的启动台。</h2><p>从应用来源到显示方式，都可以按自己的使用习惯调整。常用的留在眼前，不常用的收起来。</p></div>
+        <div class="detail-list">
+          <div class="detail-item"><strong>↗</strong><div><b>添加应用来源</b><span>把需要的应用纳入启动台，集中查找与启动。</span></div></div>
+          <div class="detail-item"><strong>◎</strong><div><b>隐藏不常用应用</b><span>减少视觉干扰，让常用应用更容易被找到。</span></div></div>
+          <div class="detail-item"><strong>▦</strong><div><b>熟悉的分页浏览</b><span>在清晰的页面之间切换，快速定位想找的应用。</span></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="footer-inner shell"><span>© 2026 Coder JEE All Rights Reserved.</span></div></footer>
+  <script>
+    (function () {
+      var base = typeof window.JLAUNCHER_API_BASE === 'string' ? window.JLAUNCHER_API_BASE.replace(/\/$/, '') : 'http://39.105.8.238';
+      var path = '/api/v1/jlaunchpad/download?platform=macOS';
+      document.querySelectorAll('[data-download], #jlaunchpad-download').forEach(function (link) {
+        link.href = (base || '') + path;
+      });
+    })();
+  </script>
+</body>
+</html>
